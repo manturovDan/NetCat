@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Server {
     public static void work() throws IOException {
-        CatHttpServer cat = new CatHttpServer();
+        HTTPServerKitty.runServer();
 
         Eat eat = new Eat();
         Thread nutrition = new Thread(eat);
