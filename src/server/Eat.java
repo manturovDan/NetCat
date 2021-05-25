@@ -29,9 +29,9 @@ public class Eat implements Runnable {
             int port = packet.getPort();
             packet = new DatagramPacket(buf, buf.length, address, port);
             String received
-                    = new String(packet.getData(), 0, packet.getLength());
+                    = (new String(packet.getData(), 0, packet.getLength())).replaceAll("\u0000.*", "");
 
-            System.out.println(received);
+            System.out.println("received UDP: " + received);
 
             if (received.equals("end")) {
                 running = false;
