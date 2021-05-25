@@ -14,6 +14,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 class CatHttpServer implements HttpHandler {
+    public CatHttpServer() throws IOException {
+        HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+
+        server.createContext("/kitty", new  CatHttpServer());
+        server.setExecutor(threadPoolExecutor);
+        server.start();
+    }
+
     public String constructHTML() throws IOException {
         String page = Files.readString(Path.of("src/server/resources/Kitty.html"));
         return page;
@@ -32,11 +41,6 @@ class CatHttpServer implements HttpHandler {
 
 public class HTTPServer {
     public static void main(String[] args) throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
-        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
-
-        server.createContext("/kitty", new  CatHttpServer());
-        server.setExecutor(threadPoolExecutor);
-        server.start();
+        CatHttpServer cat = new CatHttpServer();
     }
 }
